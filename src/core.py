@@ -1,12 +1,17 @@
-
+import socket
 from scapy.all import sniff, IP, TCP, get_if_list
 import datetime
 iface_name = "\\Device\\NPF_{8D50EC07-D06E-4FB5-9D2F-D57315AD9516}"
 class TSP_IP():
+    
     def __init__(self, callback):
         self.callback = callback
+  
+
+
     def _interfeis(self):
         self.interfeis = get_if_list()
+        print('true')
         return self.interfeis
     def pkt_callback(self,pkt):
         if IP not in pkt or TCP not in pkt:
@@ -18,3 +23,20 @@ class TSP_IP():
         if interfeis == None:
             interfeis = self._interfeis()
         sniff(iface=interfeis, prn=self.pkt_callback, count=count)
+def _my_ipaddres():
+    try:
+        host_name = socket.gethostname()
+        print(host_name)
+        return socket.gethostbyname(host_name)
+    except socket.gaierror as e:
+        return False
+def get_outbound_local_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        return s.getsockname()[0]
+    except Exception as e:
+        return False
+        
+    finally:
+        s.close()
