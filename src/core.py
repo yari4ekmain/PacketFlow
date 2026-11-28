@@ -1,7 +1,5 @@
 import socket
-from scapy.all import sniff, IP, TCP, get_if_list
-import datetime
-iface_name = "\\Device\\NPF_{8D50EC07-D06E-4FB5-9D2F-D57315AD9516}"
+from scapy.all import sniff, IP, TCP, UDP, get_if_list
 class TSP_IP():
     
     def __init__(self, callback):
@@ -23,6 +21,7 @@ class TSP_IP():
         if interfeis == None:
             interfeis = self._interfeis()
         sniff(iface=interfeis, prn=self.pkt_callback, count=count)
+        
 def _my_ipaddres():
     try:
         host_name = socket.gethostname()
